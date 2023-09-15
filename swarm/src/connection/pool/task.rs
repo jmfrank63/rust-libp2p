@@ -49,6 +49,8 @@ pub(crate) enum Command<T> {
     Close,
 }
 
+type AddressTransportErrors = Vec<(Multiaddr, TransportError<std::io::Error>)>;
+
 pub(crate) enum PendingConnectionEvent {
     ConnectionEstablished {
         id: ConnectionId,
@@ -56,7 +58,7 @@ pub(crate) enum PendingConnectionEvent {
         /// [`Some`] when the new connection is an outgoing connection.
         /// Addresses are dialed in parallel. Contains the addresses and errors
         /// of dial attempts that failed before the one successful dial.
-        outgoing: Option<(Multiaddr, Vec<(Multiaddr, TransportError<std::io::Error>)>)>,
+        outgoing: Option<(Multiaddr, AddressTransportErrors)>,
     },
     /// A pending connection failed.
     PendingFailed {

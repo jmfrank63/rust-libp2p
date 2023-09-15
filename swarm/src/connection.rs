@@ -117,6 +117,7 @@ where
     /// The underlying handler.
     handler: THandler,
     /// Futures that upgrade incoming substreams.
+    #[allow(clippy::type_complexity)]
     negotiating_in: FuturesUnordered<
         StreamUpgrade<
             THandler::InboundOpenInfo,
@@ -125,6 +126,7 @@ where
         >,
     >,
     /// Futures that upgrade outgoing substreams.
+    #[allow(clippy::type_complexity)]
     negotiating_out: FuturesUnordered<
         StreamUpgrade<
             THandler::OutboundOpenInfo,
@@ -172,6 +174,7 @@ where
 
 impl<THandler> Unpin for Connection<THandler> where THandler: ConnectionHandler {}
 
+// type ToBehaviourEventResult =
 impl<THandler> Connection<THandler>
 where
     THandler: ConnectionHandler,
@@ -217,6 +220,7 @@ where
         (self.handler, self.muxing.close())
     }
 
+    #[allow(clippy::type_complexity)]
     /// Polls the handler and the substream, forwarding events from the former to the latter and
     /// vice versa.
     pub(crate) fn poll(
@@ -440,6 +444,7 @@ where
     }
 
     #[cfg(test)]
+    #[allow(clippy::type_complexity)]
     fn poll_noop_waker(
         &mut self,
     ) -> Poll<Result<Event<THandler::ToBehaviour>, ConnectionError<THandler::Error>>> {

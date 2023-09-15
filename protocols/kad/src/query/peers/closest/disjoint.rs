@@ -28,6 +28,7 @@ use std::{
     ops::{Index, IndexMut, Range},
 };
 
+type IndexRangeToFunctionMap = Map<Range<usize>, fn(usize) -> IteratorIndex>;
 /// Wraps around a set of [`ClosestPeersIter`], enforcing a disjoint discovery
 /// path per configured parallelism according to the S/Kademlia paper.
 pub(crate) struct ClosestDisjointPeersIter {
@@ -38,7 +39,7 @@ pub(crate) struct ClosestDisjointPeersIter {
     iters: Vec<ClosestPeersIter>,
     /// Order in which to query the iterators ensuring fairness across
     /// [`ClosestPeersIter::next`] calls.
-    iter_order: Cycle<Map<Range<usize>, fn(usize) -> IteratorIndex>>,
+    iter_order: Cycle<IndexRangeToFunctionMap>,
 
     /// Mapping of contacted peers by their [`PeerId`] to [`PeerState`]
     /// containing the corresponding iterator indices as well as the response

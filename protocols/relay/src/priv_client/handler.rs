@@ -110,6 +110,7 @@ pub struct Handler {
     remote_peer_id: PeerId,
     remote_addr: Multiaddr,
     /// A pending fatal error that results in the connection being closed.
+    #[allow(clippy::type_complexity)]
     pending_error: Option<
         StreamUpgradeError<
             Either<inbound_stop::FatalUpgradeError, outbound_hop::FatalUpgradeError>,
@@ -119,6 +120,7 @@ pub struct Handler {
     keep_alive: KeepAlive,
 
     /// Queue of events to return when polled.
+    #[allow(clippy::type_complexity)]
     queued_events: VecDeque<
         ConnectionHandlerEvent<
             <Self as ConnectionHandler>::OutboundProtocol,

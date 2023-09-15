@@ -84,6 +84,7 @@ pub(crate) struct UDPMuxNewAddr {
     /// `true` when UDP mux is closed.
     is_closed: bool,
 
+    #[allow(clippy::type_complexity)]
     send_buffer: Option<(Vec<u8>, SocketAddr, oneshot::Sender<Result<usize, Error>>)>,
 
     close_futures: FuturesUnordered<BoxFuture<'static, ()>>,
@@ -425,8 +426,10 @@ pub(crate) struct UdpMuxHandle {
     remove_sender: req_res_chan::Sender<String, ()>,
 }
 
+
 impl UdpMuxHandle {
     /// Returns a new `UdpMuxHandle` and `close`, `get_conn` and `remove` receivers.
+    #[allow(clippy::type_complexity)]
     pub(crate) fn new() -> (
         Self,
         req_res_chan::Receiver<(), Result<(), Error>>,
@@ -484,6 +487,7 @@ pub(crate) struct UdpMuxWriterHandle {
 
 impl UdpMuxWriterHandle {
     /// Returns a new `UdpMuxWriterHandle` and `registration`, `send` receivers.
+    #[allow(clippy::type_complexity)]
     fn new() -> (
         Self,
         req_res_chan::Receiver<(UDPMuxConn, SocketAddr), ()>,

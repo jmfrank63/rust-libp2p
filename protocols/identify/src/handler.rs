@@ -41,6 +41,7 @@ use smallvec::SmallVec;
 use std::collections::HashSet;
 use std::{io, task::Context, task::Poll, time::Duration};
 
+type ConnectionEventWithPushOrIdentify = ConnectionHandlerEvent<Either<Identify, Push<OutboundPush>>, (), Event, io::Error>;
 /// Protocol handler for sending and receiving identification requests.
 ///
 /// Outbound requests are sent periodically. The handler performs expects
@@ -51,7 +52,7 @@ pub struct Handler {
     inbound_identify_push: Option<BoxFuture<'static, Result<Info, UpgradeError>>>,
     /// Pending events to yield.
     events: SmallVec<
-        [ConnectionHandlerEvent<Either<Identify, Push<OutboundPush>>, (), Event, io::Error>; 4],
+        [ConnectionEventWithPushOrIdentify; 4],
     >,
 
     /// Pending identification replies, awaiting being sent.

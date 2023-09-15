@@ -174,15 +174,19 @@ impl Client {
     }
 }
 
+type PeerSender = oneshot::Sender<Result<(), Box<dyn Error + Send>>>;
+type ProviderSender = oneshot::Sender<HashSet<PeerId>>;
+type FileSender = oneshot::Sender<Result<Vec<u8>, Box<dyn Error + Send>>>;
+
 pub(crate) struct EventLoop {
     swarm: Swarm<ComposedBehaviour>,
     command_receiver: mpsc::Receiver<Command>,
     event_sender: mpsc::Sender<Event>,
-    pending_dial: HashMap<PeerId, oneshot::Sender<Result<(), Box<dyn Error + Send>>>>,
+    pending_dial: HashMap<PeerId, PeerSender>,
     pending_start_providing: HashMap<QueryId, oneshot::Sender<()>>,
-    pending_get_providers: HashMap<QueryId, oneshot::Sender<HashSet<PeerId>>>,
+    pending_get_providers: HashMap<QueryId, ProviderSender>,
     pending_request_file:
-        HashMap<RequestId, oneshot::Sender<Result<Vec<u8>, Box<dyn Error + Send>>>>,
+        HashMap<RequestId, FileSender>,
 }
 
 impl EventLoop {

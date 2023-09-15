@@ -146,6 +146,7 @@ pub trait ConnectionHandler: Send + 'static {
     fn connection_keep_alive(&self) -> KeepAlive;
 
     /// Should behave like `Stream::poll()`.
+    #[allow(clippy::type_complexity)]
     fn poll(
         &mut self,
         cx: &mut Context<'_>,
@@ -407,6 +408,7 @@ impl<'a> ProtocolsAdded<'a> {
 /// An [`Iterator`] over all protocols that have been removed.
 #[derive(Debug, Clone)]
 pub struct ProtocolsRemoved<'a> {
+    #[allow(clippy::type_complexity)]
     protocols: Either<
         Peekable<Difference<'a, StreamProtocol, RandomState>>,
         Peekable<Intersection<'a, StreamProtocol, RandomState>>,

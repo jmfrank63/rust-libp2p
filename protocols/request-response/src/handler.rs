@@ -70,6 +70,7 @@ where
     /// Outbound upgrades waiting to be emitted as an `OutboundSubstreamRequest`.
     outbound: VecDeque<RequestProtocol<TCodec>>,
     /// Inbound upgrades waiting for the incoming request.
+    #[allow(clippy::type_complexity)]
     inbound: FuturesUnordered<
         BoxFuture<
             'static,

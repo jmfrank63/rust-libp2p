@@ -69,6 +69,7 @@ pub struct Handler {
         >,
     >,
     /// Queue of events to return when polled.
+    #[allow(clippy::type_complexity)]
     queued_events: VecDeque<
         ConnectionHandlerEvent<
             <Self as ConnectionHandler>::OutboundProtocol,

@@ -328,6 +328,7 @@ where
     /// The protocol codec for reading and writing requests and responses.
     codec: TCodec,
     /// Pending events to return from `poll`.
+    #[allow(clippy::type_complexity)]
     pending_events:
         VecDeque<ToSwarm<Event<TCodec::Request, TCodec::Response>, RequestProtocol<TCodec>>>,
     /// The currently connected peers, their pending outbound and inbound responses and their known,

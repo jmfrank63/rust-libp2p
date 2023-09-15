@@ -301,6 +301,14 @@ pub(crate) enum PoolEvent<THandler: ConnectionHandler> {
     },
 }
 
+type DialFuture = BoxFuture<
+    'static,
+    (
+        Multiaddr,
+        Result<(PeerId, StreamMuxerBox), TransportError<std::io::Error>>,
+    ),
+>;
+
 impl<THandler> Pool<THandler>
 where
     THandler: ConnectionHandler,
@@ -408,15 +416,7 @@ where
     /// that establishes and negotiates the connection.
     pub(crate) fn add_outgoing(
         &mut self,
-        dials: Vec<
-            BoxFuture<
-                'static,
-                (
-                    Multiaddr,
-                    Result<(PeerId, StreamMuxerBox), TransportError<std::io::Error>>,
-                ),
-            >,
-        >,
+        dials: Vec<DialFuture>,
         peer: Option<PeerId>,
         role_override: Endpoint,
         dial_concurrency_factor_override: Option<NonZeroU8>,

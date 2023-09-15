@@ -58,6 +58,7 @@ pub enum Version {
     V1_1,
 }
 
+type FastMessageIdFn = Arc<dyn Fn(&RawMessage) -> FastMessageId + Send + Sync + 'static>;
 /// Configuration parameters that define the performance of the gossipsub network.
 #[derive(Clone)]
 pub struct Config {
@@ -78,7 +79,7 @@ pub struct Config {
     duplicate_cache_time: Duration,
     validate_messages: bool,
     message_id_fn: Arc<dyn Fn(&Message) -> MessageId + Send + Sync + 'static>,
-    fast_message_id_fn: Option<Arc<dyn Fn(&RawMessage) -> FastMessageId + Send + Sync + 'static>>,
+    fast_message_id_fn: Option<FastMessageIdFn>,
     allow_self_origin: bool,
     do_px: bool,
     prune_peers: usize,

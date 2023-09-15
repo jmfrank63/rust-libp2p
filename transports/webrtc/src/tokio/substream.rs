@@ -157,6 +157,8 @@ impl AsyncRead for Substream {
     }
 }
 
+type FlagAndBytesIoResult = io::Result<Option<(Option<Flag>, Option<Vec<u8>>)>>;
+
 impl AsyncWrite for Substream {
     fn poll_write(
         mut self: Pin<&mut Self>,
@@ -239,7 +241,7 @@ impl AsyncWrite for Substream {
 fn io_poll_next(
     io: &mut Framed<Compat<PollDataChannel>, quick_protobuf_codec::Codec<Message>>,
     cx: &mut Context<'_>,
-) -> Poll<io::Result<Option<(Option<Flag>, Option<Vec<u8>>)>>> {
+) -> Poll<FlagAndBytesIoResult> {
     match ready!(io.poll_next_unpin(cx))
         .transpose()
         .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?

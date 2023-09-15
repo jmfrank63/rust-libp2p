@@ -218,6 +218,7 @@ impl EnabledHandler {
         self.outbound_substream = Some(OutboundSubstreamState::WaitingOutput(substream));
     }
 
+    #[allow(clippy::type_complexity)]
     fn poll(
         &mut self,
         cx: &mut Context<'_>,
